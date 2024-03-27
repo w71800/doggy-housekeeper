@@ -1,6 +1,17 @@
+/**
+ *  
+ *  1. 一旦有更新狀態，就要發出一份備份訊息到群組，以防伺服器掛掉資料被刷新
+ *  2.
+ * 
+ * */ 
+
 const express = require('express');
 const line = require('@line/bot-sdk');
 require('dotenv').config()
+const table = require('./utils/routineTable')
+const getResponse = require('./utils/getResponse')
+let listIndex = 0
+
 
 
 // Line Bot 的設定
@@ -12,16 +23,8 @@ const lineConfig = {
 // 初始化 Line Bot
 const lineClient = new line.Client(lineConfig);
 
-// 建立 Express app
 const app = express();
 
-// 設定伺服器的埠號
-const PORT = process.env.PORT || 3000;
-
-// 設定路由
-app.get('/', (req, res) => {
-  res.send('歡迎來到我的伺服器！');
-});
 
 // 處理 Line Bot 的訊息事件
 app.post('/webhook', line.middleware(lineConfig), (req, res) => {
@@ -40,14 +43,21 @@ function handleEvent(event) {
     return Promise.resolve(null);
   }
 
-  // 回覆訊息
+  
+  let { text } = event.message // 取得訊息
+  let response = getResponse(text)
+  
+  if(!response) return
+
   return lineClient.replyMessage(event.replyToken, {
     type: 'text',
-    text: event.message.text
-  });
+    text: response
+  })
+
+  
 }
 
 // 開始監聽伺服器
-app.listen(PORT, () => {
-  console.log(`伺服器已啟動，正在監聽埠號 ${PORT}`);
+app.listen(3000, () => {
+  console.log(`伺服器已啟動，正在監聽埠號 3000`);
 });
