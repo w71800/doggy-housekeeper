@@ -9,7 +9,7 @@ class Table {
     return this[item]
   }
   setNext(item){
-    this[item] == 4 ? this[item] = 0 : this[item] += 1
+    this[item] == this.members.length - 1 ? this[item] = 0 : this[item] += 1
   }
 }
 

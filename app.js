@@ -49,10 +49,11 @@ function handleEvent(event) {
   
   if(!response) return
 
-  return lineClient.replyMessage(event.replyToken, {
-    type: 'text',
-    text: response
-  })
+  // return lineClient.replyMessage(event.replyToken, {
+  //   type: 'text',
+  //   text: response
+  // })
+  return lineClient.replyMessage(event.replyToken, response)
 
   
 }
