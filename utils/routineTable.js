@@ -1,16 +1,44 @@
 class Table {
   constructor(){
-    this.members = ["嗙", "草", "星", "肥", "琪"]
-    this["垃圾"] = 0;
-    this["回收"] = 0;
+    // this.keywords = ["垃圾", "回收", "廁所", "客廳", "餐廳", "廚房", "陽台", "垃圾處理", "公區打掃"]
+    this.members = ["嗙", "草", "肥", "星", "琪"]
+    this.routines = {
+      "垃圾": { type: "垃圾處理", pending: null, now: 0 },
+      "回收": { type: "垃圾處理", pending: null, now: 0 },
+      "廁所": { type: "公區打掃", pending: null, now: 0 },
+      "客廳": { type: "公區打掃", pending: null, now: 0 },
+      "餐廳": { type: "公區打掃", pending: null, now: 0 },
+      "廚房": { type: "公區打掃", pending: null, now: 0 },
+      "陽台": { type: "公區打掃", pending: null, now: 0 },
+    }
+  }
+  /**
+   * 
+   * @param {*} keyword 
+   * @returns {}
+   */
+  getNow(keyword){
+    if (keyword !== "垃圾處理" && keyword !== "公區打掃") {
+      let { [keyword]: { now } } = this.routines
+      return { [keyword]: now }
+    } else {
+      let target = Object.entries(this.routines).filter( item => item[1].type == keyword )
+      let entries = target.map(([key, value]) => [key, value.now])
+      return Object.fromEntries(entries)
+    }
   }
 
-  getNow(item){
-    return this[item]
-  }
-  setNext(item){
-    this[item] == this.members.length - 1 ? this[item] = 0 : this[item] += 1
+  setNext(routine){
+    let { [routine]: value } = this.routines
+    if(routine == "廁所" && (value.now == 0 || value.now == 1)){
+      value.now = 2  
+    } else {
+      value.now == this.members.length - 1 ? value.now = 0 : value.now += 1
+    }
   }
 }
 
-module.exports = new Table()
+let table = new Table()
+// console.log(table.getNow("公區打掃"));
+
+module.exports = table
