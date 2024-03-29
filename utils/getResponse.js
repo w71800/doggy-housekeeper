@@ -1,4 +1,5 @@
 const table = require("./routineTable")
+const { getTime } = require("./utils")
 
 const getResponse = (text, userInfo) => {
   let response = {
@@ -12,7 +13,19 @@ const getResponse = (text, userInfo) => {
         contents: [
           {
             type: "text",
-            text: "管家狗狗說："
+            text: "管家狗狗說",
+            align: "center",
+            weight: "bold",
+            size: "18px",
+            // emojis: [
+            //   {
+            //     index: 0,
+            //     // productId: "6124aa4ae72c607c18108562",
+            //     // emojiId: "038"
+            //     productId: "5ac1de17040ab15980c9b438",
+            //     emojiId: "001"
+            //   }
+            // ]
           }
         ],
         backgroundColor: "#f6dc93"
@@ -61,7 +74,7 @@ const getResponse = (text, userInfo) => {
     }
   }
   
-  if(text == "垃圾名單"){
+  if(text == "狗狗垃圾名單"){
     let result = Object.entries(table.getNow("垃圾處理"))
                 .reduce((temp, [routine, now]) => temp + `${routine}：${table.members[now]}\n`, "")
 
@@ -70,7 +83,7 @@ const getResponse = (text, userInfo) => {
       text: result,
       wrap: true
     }
-  } else if(text == "打掃名單"){
+  } else if(text == "狗狗打掃名單"){
     let result = Object.entries(table.getNow("公區打掃"))
                 .reduce((temp, [routine, now]) => temp + `${routine}：${table.members[now]}\n`, "")
 
@@ -83,21 +96,34 @@ const getResponse = (text, userInfo) => {
     content = {
       type: "text",
       text: `可以怎麼使喚我，可以在「狗狗」後面加上：
-        打掃名單：可以告訴你目前要打掃的各區名單\n
-        垃圾名單：可以告訴你目前要倒垃圾或回收的名單\n
-        我垃圾倒完了：輪替給下一個人倒垃圾\n
-        我回收倒完了：輪替給下一個人倒回收\n
-        區域是誰：可以搜尋該區域的的負責人
+      打掃名單：告訴你目前打掃的各區名單
+      垃圾名單：告訴你目前垃圾或回收的名單
+      我垃圾倒完了：輪替給下一個人倒垃圾
+      我回收倒完了：輪替給下一個人倒回收
+      區域是誰：搜尋該區域的的負責人
+
+      例如「狗狗我垃圾倒完了」、「狗狗廁所是誰」
+      
+      汪汪！
       `,
       wrap: true,
-      size: "12px",
+      size: "11px",
       align: "start"
     }
   } else if(text == "打招呼"){
     content = {
       type: "text",
-      text: `早安，汪汪！` ,
+      text: `${getTime()}，汪汪！` ,
       wrap: true,
+      // emojis: [
+      //   {
+      //     index: 0,
+      //     // productId: "6124aa4ae72c607c18108562",
+      //     // emojiId: "038"
+      //     productId: "5ac1de17040ab15980c9b438",
+      //     emojiId: "001"
+      //   }
+      // ]
     }
   }
   
