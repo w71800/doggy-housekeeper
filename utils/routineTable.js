@@ -1,11 +1,10 @@
 class Table {
   constructor(){
-    // this.keywords = ["垃圾", "回收", "廁所", "客廳", "餐廳", "廚房", "陽台", "垃圾處理", "公區打掃"]
     this.members = ["嗙", "草", "肥", "星", "琪"]
     this.routines = {
       "垃圾": { type: "垃圾處理", pending: null, now: 0 },
       "回收": { type: "垃圾處理", pending: null, now: 0 },
-      "廁所": { type: "公區打掃", pending: null, now: 0 },
+      "廁所": { type: "公區打掃", pending: null, now: 2 },
       "客廳": { type: "公區打掃", pending: null, now: 0 },
       "餐廳": { type: "公區打掃", pending: null, now: 0 },
       "廚房": { type: "公區打掃", pending: null, now: 0 },
@@ -13,16 +12,15 @@ class Table {
     }
   }
   /**
-   * 
-   * @param {*} keyword 
-   * @returns {}
+   * @param {string} routine
+   * @returns {object} ```{ routine1: nowIndex, routine2: nowIndex }```
    */
-  getNow(keyword){
-    if (keyword !== "垃圾處理" && keyword !== "公區打掃") {
-      let { [keyword]: { now } } = this.routines
-      return { [keyword]: now }
+  getNow(routine){
+    if (routine !== "垃圾處理" && routine !== "公區打掃") {
+      let { [routine]: { now } } = this.routines
+      return { [routine]: now }
     } else {
-      let target = Object.entries(this.routines).filter( item => item[1].type == keyword )
+      let target = Object.entries(this.routines).filter( item => item[1].type == routine )
       let entries = target.map(([key, value]) => [key, value.now])
       return Object.fromEntries(entries)
     }
@@ -34,6 +32,15 @@ class Table {
       value.now = 2  
     } else {
       value.now == this.members.length - 1 ? value.now = 0 : value.now += 1
+    }
+  }
+
+  setTo(routine, index){
+    let { [routine]: value } = this.routines
+    if(routine == "廁所" && (value.now == 0 || value.now == 1)){
+      return "failed"
+    } else {
+      value.now = index
     }
   }
 }
