@@ -10,6 +10,35 @@ class Table {
       "廚房": { type: "公區打掃", pending: null, now: 0 },
       "陽台": { type: "公區打掃", pending: null, now: 0 },
     }
+    this.previous = null
+    
+    // 以遞迴的手法來幫整個物件加上 proxy
+    function createProxyForObject(obj, handler) {
+      if (typeof obj !== 'object' || obj === null) {
+        return obj;
+      }
+    
+      const proxy = new Proxy(obj, handler);
+    
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          obj[key] = createProxyForObject(obj[key], handler);
+        }
+      }
+    
+      return proxy;
+    }
+    const handler = {
+      set: (target, prop, value, receiver) => {
+        if(prop == "now" || prop == "pending"){
+          this.previous = JSON.parse(JSON.stringify(this.routines))
+
+          // 並將 previous 的值寫入到 Google sheet 中
+        }
+        return Reflect.set(target, prop, value, receiver);
+      }
+    }
+    this.routines = createProxyForObject(this.routines, handler);
   }
   /**
    * @param {string} routine
@@ -31,7 +60,14 @@ class Table {
     if(routine == "廁所" && (value.now == 0 || value.now == 1)){
       value.now = 2  
     } else {
-      value.now == this.members.length - 1 ? value.now = 0 : value.now += 1
+      // 若有 pending 的狀況下，直接派給 pending 並且清空
+      if(typeof(value.pending) !== 'number'){
+        value.now == this.members.length - 1 ? value.now = 0 : value.now += 1
+      }else{
+        value.now = value.pending
+        value.pending = null
+        console.log(this.routines);
+      }
     }
   }
 
@@ -40,7 +76,11 @@ class Table {
     if(routine == "廁所" && (value.now == 0 || value.now == 1)){
       return "failed"
     } else {
+      value.pending = value.now
       value.now = index
+      console.log(this.routines);
+      
+      return true
     }
   }
 }

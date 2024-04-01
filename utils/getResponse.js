@@ -125,6 +125,8 @@ const getResponse = (text, userInfo) => {
       //   }
       // ]
     }
+  } else if(text == "調換") {
+    table.setTo("廚房", 4)
   }
   
   content ? contents.push(content) : response = null
