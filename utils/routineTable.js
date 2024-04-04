@@ -1,14 +1,16 @@
+const notion = require("./notion")
+
 class Table {
   constructor(){
     this.members = ["嗙", "草", "肥", "星", "琪"]
     this.routines = {
-      "垃圾": { type: "垃圾處理", pending: null, now: 0 },
-      "回收": { type: "垃圾處理", pending: null, now: 0 },
+      "垃圾": { type: "垃圾處理", pending: null, now: 3 },
+      "回收": { type: "垃圾處理", pending: null, now: 1 },
       "廁所": { type: "公區打掃", pending: null, now: 2 },
-      "客廳": { type: "公區打掃", pending: null, now: 0 },
-      "餐廳": { type: "公區打掃", pending: null, now: 0 },
-      "廚房": { type: "公區打掃", pending: null, now: 0 },
-      "陽台": { type: "公區打掃", pending: null, now: 0 },
+      "客廳": { type: "公區打掃", pending: null, now: 1 },
+      "餐廳": { type: "公區打掃", pending: null, now: 4 },
+      "廚房": { type: "公區打掃", pending: null, now: 4 },
+      "陽台": { type: "公區打掃", pending: null, now: 3 },
     }
     this.previous = null
     
@@ -55,20 +57,20 @@ class Table {
     }
   }
 
-  setNext(routine){
+  async setNext(routine){
     let { [routine]: value } = this.routines
-    if(routine == "廁所" && (value.now == 0 || value.now == 1)){
+    if(routine == "廁所" && (value.now == 0 || value.now == 1)) {
       value.now = 2  
     } else {
-      // 若有 pending 的狀況下，直接派給 pending 並且清空
-      if(typeof(value.pending) !== 'number'){
+      if(value.pending == null) {
         value.now == this.members.length - 1 ? value.now = 0 : value.now += 1
-      }else{
+      } else {
         value.now = value.pending
         value.pending = null
-        console.log(this.routines);
       }
     }
+
+    notion.setRow(this)
   }
 
   setTo(routine, index){
@@ -78,7 +80,6 @@ class Table {
     } else {
       value.pending = value.now
       value.now = index
-      console.log(this.routines);
       
       return true
     }

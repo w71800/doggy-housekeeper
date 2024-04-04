@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "@line/bot-sdk": "^9.0.3",
+    "@notionhq/client": "^2.2.14",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "googleapis": "^134.0.0"
   }
 }

@@ -10,7 +10,6 @@ const line = require('@line/bot-sdk');
 require('dotenv').config()
 const table = require('./utils/routineTable')
 const getResponse = require('./utils/getResponse')
-let listIndex = 0
 
 
 
@@ -58,7 +57,6 @@ function handleEvent(event) {
   
 }
 
-// 開始監聽伺服器
 app.listen(3000, () => {
   console.log(`伺服器已啟動，正在監聽埠號 3000`);
 });
