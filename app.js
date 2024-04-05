@@ -10,6 +10,7 @@ const line = require('@line/bot-sdk');
 require('dotenv').config()
 const table = require('./utils/routineTable')
 const getResponse = require('./utils/getResponse')
+const PORT = process.env.PORT || 3000;
 
 
 
@@ -57,6 +58,6 @@ function handleEvent(event) {
   
 }
 
-app.listen(3000, () => {
-  console.log(`伺服器已啟動，正在監聽埠號 3000`);
+app.listen(PORT, () => {
+  console.log(`伺服器已啟動，正在監聽埠號 ${PORT}`);
 });
