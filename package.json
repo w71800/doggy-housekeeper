@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
     "@line/bot-sdk": "^9.0.3",
     "@notionhq/client": "^2.2.14",
