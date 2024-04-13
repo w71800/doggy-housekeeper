@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 
 
+
 // Line Bot 的設定
 const lineConfig = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
@@ -25,6 +26,7 @@ const lineClient = new line.Client(lineConfig);
 
 const app = express();
 
+table.init()
 
 // 處理 Line Bot 的訊息事件
 app.post('/webhook', line.middleware(lineConfig), (req, res) => {

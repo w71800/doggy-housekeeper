@@ -2,15 +2,15 @@ const notion = require("./notion")
 
 class Table {
   constructor(){
-    this.members = ["嗙", "草", "肥", "星", "琪"]
+    this.members = ["嗙", "草", "肥", "星"]
     this.routines = {
-      "垃圾": { type: "垃圾處理", pending: null, now: 3 },
-      "回收": { type: "垃圾處理", pending: null, now: 1 },
-      "廁所": { type: "公區打掃", pending: null, now: 2 },
-      "客廳": { type: "公區打掃", pending: null, now: 1 },
-      "餐廳": { type: "公區打掃", pending: null, now: 4 },
-      "廚房": { type: "公區打掃", pending: null, now: 4 },
-      "陽台": { type: "公區打掃", pending: null, now: 3 },
+      "垃圾": { type: "垃圾處理", pending: null, now: 2 },
+      "回收": { type: "垃圾處理", pending: null, now: 3 },
+      "廁所": { type: "公區打掃", pending: null, now: 3 },
+      "客廳": { type: "公區打掃", pending: null, now: 3 },
+      "餐廳": { type: "公區打掃", pending: null, now: 1 },
+      "廚房": { type: "公區打掃", pending: null, now: 0 },
+      "陽台": { type: "公區打掃", pending: null, now: 0 },
     }
     this.previous = null
     
@@ -70,7 +70,7 @@ class Table {
       }
     }
 
-    notion.setRow(this)
+    await notion.setRow(this)
   }
 
   setTo(routine, index){
@@ -83,6 +83,16 @@ class Table {
       
       return true
     }
+  }
+
+  async init(){
+    let lastRow = await notion.getLastestRow()
+    
+    if(lastRow.length == 0) return 
+    let { previous, result: routines } = lastRow.properties
+
+    this.previous = JSON.parse(previous.rich_text[0].plain_text)
+    this.routines = JSON.parse(routines.rich_text[0].plain_text)
   }
 }
 
