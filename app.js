@@ -7,19 +7,24 @@
 
 const express = require('express');
 const line = require('@line/bot-sdk');
-require('dotenv').config()
+const dotenv = require('dotenv')
 const table = require('./utils/routineTable')
 const getResponse = require('./utils/getResponse')
 const PORT = process.env.PORT || 3000;
 
 
+const envFile = `.env.${process.env.NODE_ENV}` || '.env';
 
+dotenv.config({ path: envFile });
+console.log(process.env.NODE_ENV);
 
 // Line Bot 的設定
 const lineConfig = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET
 };
+
+console.log(lineConfig);
 
 // 初始化 Line Bot
 const lineClient = new line.Client(lineConfig);

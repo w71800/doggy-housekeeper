@@ -75,6 +75,7 @@ const getResponse = (text, userInfo) => {
   }
   
   if(text == "狗狗垃圾名單"){
+    // TODO: 如果有該項目有 pending 的話，顯示為 垃圾：嗙（跟 pending 交換）
     let result = Object.entries(table.getNow("垃圾處理"))
                 .reduce((temp, [routine, now]) => temp + `${routine}：${table.members[now]}\n`, "")
 
@@ -84,8 +85,9 @@ const getResponse = (text, userInfo) => {
       wrap: true
     }
   } else if(text == "狗狗打掃名單"){
+    // TODO: 如果有該項目有 pending 的話，顯示為 廁所：嗙（跟 pending 交換）
     let result = Object.entries(table.getNow("公區打掃"))
-                .reduce((temp, [routine, now]) => temp + `${routine}：${table.members[now]}\n`, "")
+                .reduce((temp, [routine, now]) => temp + `${routine}：${table.members[now]}\n`, "")  // TODO: 這邊不要一直換行，或許可以使用 flex
 
     content = {
       type: "text",

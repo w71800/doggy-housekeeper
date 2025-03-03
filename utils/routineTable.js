@@ -59,7 +59,11 @@ class Table {
 
   async setNext(routine){
     let { [routine]: value } = this.routines
-    if(routine == "廁所" && (value.now == 0 || value.now == 1)) {
+    /**
+     * TODO: 這邊設置的條件有點問題，應該是要確認當下為最後一個或 0 的時候才跳到 2（待測試）
+     * 
+     */
+    if(routine == "廁所" && (value.now == 0 || value.now == (this.members.length - 1))) {
       value.now = 2  
     } else {
       if(value.pending == null) {

@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "NODE_ENV=development && nodemon app.js"
   },
   "dependencies": {
     "@line/bot-sdk": "^9.0.3",
